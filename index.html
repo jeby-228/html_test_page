@@ -1,1 +1,288 @@
-<p>test</p>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CASCADE — Progressive Scrolling Demo</title>
+  <meta name="description" content="CASCADE Progressive Scrolling 示範網站：sticky 章節、視差與橫向軌道。" />
+  <link rel="icon" href="assets/favicon.ico" sizes="any" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.css" />
+</head>
+<body>
+  <div class="scroll-progress" id="progress" aria-hidden="true"></div>
+
+  <aside class="palette-dock" aria-label="隨機色卡">
+    <button type="button" class="palette-dock__btn" id="shufflePalette" aria-label="隨機更換色卡" title="隨機換色">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M16 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M4 7h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M8 21l-4-4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M20 17H4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <div class="palette-dock__swatches" id="dockSwatches" aria-hidden="true">
+      <span data-swatch="ink"></span>
+      <span data-swatch="teal"></span>
+      <span data-swatch="mist"></span>
+      <span data-swatch="slate"></span>
+      <span data-swatch="coral"></span>
+    </div>
+    <p class="palette-dock__hint">隨機換色</p>
+  </aside>
+
+  <a class="site-logo site-logo--float" href="#top" aria-label="CASCADE 回頂部">
+    <svg class="logo-svg" viewBox="0 0 280 64" role="img" aria-hidden="true">
+      <rect x="2" y="8" width="40" height="10" rx="2" fill="var(--mist)"/>
+      <rect x="8" y="22" width="34" height="10" rx="2" fill="var(--teal)"/>
+      <rect x="14" y="36" width="28" height="10" rx="2" fill="var(--slate)"/>
+      <rect x="20" y="50" width="22" height="8" rx="2" fill="var(--coral)"/>
+      <text x="58" y="44" font-family="Syne, Arial Black, sans-serif" font-size="36" font-weight="800" letter-spacing="-1.5" fill="var(--mist)">CASCADE</text>
+    </svg>
+  </a>
+
+  <header class="hero" id="top">
+    <div class="hero__bg" aria-hidden="true"></div>
+    <div class="hero__pattern" aria-hidden="true"></div>
+    <div class="hero__layers" aria-hidden="true">
+      <div class="hero__layer hero__layer--3" data-speed="0.15"></div>
+      <div class="hero__layer hero__layer--2" data-speed="0.28"></div>
+      <div class="hero__layer hero__layer--1" data-speed="0.42"></div>
+    </div>
+    <div class="hero__content">
+      <h1 class="brand">
+        <svg class="logo-svg brand__logo" viewBox="0 0 280 64" role="img" aria-label="CASCADE">
+          <rect x="2" y="8" width="40" height="10" rx="2" fill="var(--mist)"/>
+          <rect x="8" y="22" width="34" height="10" rx="2" fill="var(--teal)"/>
+          <rect x="14" y="36" width="28" height="10" rx="2" fill="var(--slate)"/>
+          <rect x="20" y="50" width="22" height="8" rx="2" fill="var(--coral)"/>
+          <text x="58" y="44" font-family="Syne, Arial Black, sans-serif" font-size="36" font-weight="800" letter-spacing="-1.5" fill="var(--mist)">CASCADE</text>
+        </svg>
+      </h1>
+      <p class="hero__headline">往下捲，故事就往前推進</p>
+      <p>一個 Progressive Scrolling 示範：固定視窗、段落浮現、橫向軌道隨垂直捲動展開。</p>
+      <a class="cta" href="#chapters">
+        開始捲動
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M8 2v10M3 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="chapters" id="chapters" aria-label="漸進章節">
+      <article class="chapter">
+        <div class="chapter__sticky">
+          <div class="chapter__index" data-egg-index="1" aria-hidden="true">01</div>
+          <h2>釘住左側，右側繼續說</h2>
+          <p>左側標題固定在視窗裡，右側段落隨捲動一則一則浮現——這是 Progressive Scrolling 最常見的敘事骨架。</p>
+        </div>
+        <div class="chapter__scroll">
+          <div class="beat" data-beat>
+            <span class="beat__tag">Sticky + Reveal</span>
+            <h3>先建立錨點</h3>
+            <p>用 <code>position: sticky</code> 把關鍵訊息留在畫面，讓讀者在長捲動中不會失去方向。</p>
+          </div>
+          <div class="beat" data-beat>
+            <span class="beat__tag">Scroll Progress</span>
+            <h3>再用節奏推進</h3>
+            <p>每個段落只在進入視窗時變清楚，形成「讀到哪、亮到哪」的漸進感。</p>
+          </div>
+          <div class="beat" data-beat>
+            <span class="beat__tag">One Job</span>
+            <h3>一區一件事</h3>
+            <p>區塊不塞多餘資訊：標題說明機制，段落示範效果，捲動本身就是互動。</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter chapter--alt">
+        <div class="chapter__sticky">
+          <div class="chapter__index" data-egg-index="2" aria-hidden="true">02</div>
+          <h2>深度靠層次，不是靠卡片</h2>
+          <p>背景色、字重與透明度變化，就能做出段落之間的落差，不需要堆疊框線與陰影。</p>
+        </div>
+        <div class="chapter__scroll">
+          <div class="beat" data-beat>
+            <span class="beat__tag">Parallax</span>
+            <h3>前景動得比較快</h3>
+            <p>Hero 的山脊層以不同速度平移，營造空間感——同一畫面、多層速率。</p>
+          </div>
+          <div class="beat" data-beat>
+            <span class="beat__tag">Atmosphere</span>
+            <h3>漸層當空氣</h3>
+            <p>色卡來自 Coolors：Ink、Teal、Mist、Slate、Coral，整站只靠這五色呼吸。</p>
+          </div>
+          <div class="beat" data-beat>
+            <span class="beat__tag">Motion</span>
+            <h3>動作要有目的</h3>
+            <p>入場、浮現、橫移——每個動畫都在告訴你「現在走到哪一層敘事」。</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter chapter--coral">
+        <div class="chapter__sticky">
+          <div class="chapter__index" data-egg-index="3" aria-hidden="true">03</div>
+          <h2>垂直捲動，驅動橫向軌道</h2>
+          <p>接下來這段會把「向下」轉換成「向右」：同一套捲動輸入，換一種空間輸出。</p>
+        </div>
+        <div class="chapter__scroll">
+          <div class="beat" data-beat>
+            <span class="beat__tag">Map Scroll → X</span>
+            <h3>把進度映射成位移</h3>
+            <p>讀取區塊在視窗中的進度百分比，再乘上軌道可移動寬度，就得到橫移距離。</p>
+          </div>
+          <div class="beat" data-beat>
+            <span class="beat__tag">Pin the Viewport</span>
+            <h3>先卡住再滑動</h3>
+            <p>外層拉高高度製造捲動餘裕，內層 sticky 住視窗，使用者會感覺畫面「停住後側滑」。</p>
+          </div>
+          <div class="beat" data-beat>
+            <span class="beat__tag">Next</span>
+            <h3>準備好了就往下</h3>
+            <p>看完右側三則後，繼續捲動會進入真正的橫向軌道示範。</p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="rail-section" id="rail" aria-label="橫向捲動軌道">
+      <div class="rail-sticky">
+        <div class="rail-intro">
+          <h2>橫向軌道</h2>
+          <p>繼續往下捲——面板會向左滑過。這是 Progressive Scrolling 的經典變體。</p>
+        </div>
+        <div class="rail-track" id="railTrack">
+          <div class="rail-panel">
+            <span>Panel 01</span>
+            <h3>鎖定視窗</h3>
+          </div>
+          <div class="rail-panel">
+            <span>Panel 02</span>
+            <h3>計算進度</h3>
+          </div>
+          <div class="rail-panel">
+            <span>Panel 03</span>
+            <h3>映射位移</h3>
+          </div>
+          <div class="rail-panel">
+            <span>Panel 04</span>
+            <h3>完成一段敘事</h3>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal" id="reveal" aria-label="結尾浮現">
+      <div class="reveal__inner">
+        <h2>
+          <span class="reveal__line">捲動不是裝飾，</span>
+          <span class="reveal__line">是敘事節奏。</span>
+        </h2>
+        <p>CASCADE 示範到此：進度條、視差、釘住章節、橫向軌道——同一套捲動語彙。</p>
+        <p class="future-note" id="futureNote"></p>
+        <button type="button" class="cta door-cta" id="openDoorsBtn" hidden>開啟艙門</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="site-logo site-logo--footer" href="#top" aria-label="CASCADE">
+      <svg class="logo-svg" viewBox="0 0 280 64" role="img" aria-hidden="true">
+        <rect x="2" y="8" width="40" height="10" rx="2" fill="var(--mist)"/>
+        <rect x="8" y="22" width="34" height="10" rx="2" fill="var(--teal)"/>
+        <rect x="14" y="36" width="28" height="10" rx="2" fill="var(--slate)"/>
+        <rect x="20" y="50" width="22" height="8" rx="2" fill="var(--coral)"/>
+        <text x="58" y="44" font-family="Syne, Arial Black, sans-serif" font-size="36" font-weight="800" letter-spacing="-1.5" fill="var(--mist)">CASCADE</text>
+      </svg>
+    </a>
+    <div class="palette" aria-label="色卡" id="footerSwatches">
+      <div class="swatch" data-swatch="ink" title="#1B263B"></div>
+      <div class="swatch" data-swatch="teal" title="#415A77"></div>
+      <div class="swatch" data-swatch="mist" title="#E0E1DD"></div>
+      <div class="swatch" data-swatch="slate" title="#778DA9"></div>
+      <div class="swatch" data-swatch="coral" title="#E09F3E"></div>
+    </div>
+    <p>
+      色卡來源：
+      <a id="coolorsLink" href="https://coolors.co/1b263b-415a77-e0e1dd-778da9-e09f3e" target="_blank" rel="noopener noreferrer">Coolors palette</a>
+      · 右側按鈕可隨機換色
+    </p>
+  </footer>
+
+  <div class="egg-toast" id="eggToast" role="status" aria-live="polite" hidden></div>
+  <div class="egg-rain" id="eggRain" aria-hidden="true"></div>
+  <div class="egg-badge" id="eggBadge" hidden aria-label="彩蛋進度">0/5</div>
+
+  <!-- Madness HUD：預設收合，不搶主體驗 -->
+  <aside class="madness-hud is-collapsed" id="madnessHud" aria-label="瘋狂儀表">
+    <button type="button" class="madness-hud__toggle" id="madnessToggle" aria-expanded="false" title="瘋狂模式">
+      ✦
+    </button>
+    <div class="madness-hud__panel">
+      <div class="floor-hud" id="floorHud">
+        <span class="madness-kicker">ELEVATOR</span>
+        <strong id="floorLabel">L0 · 大廳</strong>
+      </div>
+      <div class="time-hud" id="timeHud">
+        <span class="madness-kicker">剩餘時間</span>
+        <strong id="timeValue">10:00</strong>
+        <span class="time-bought">已購買 <b id="timeBought">0</b> 秒</span>
+      </div>
+      <div class="soul-hud">
+        <span class="madness-kicker">噬魂計數</span>
+        <strong id="soulCount">0</strong>
+      </div>
+    </div>
+  </aside>
+
+  <div class="soul-layer" id="soulLayer" aria-hidden="true"></div>
+  <div class="infect-banner" id="infectBanner" hidden role="status"></div>
+  <div class="alarm-overlay" id="alarmOverlay" hidden>
+    <p>EMERGENCY STOP</p>
+    <span>電梯已鎖定 · 再輸入 Konami 解除</span>
+  </div>
+
+  <div class="contract-modal" id="gravityContract" hidden>
+    <div class="contract-modal__panel">
+      <p class="madness-kicker">GRAVITY CONTRACT</p>
+      <h2>重力反轉合約</h2>
+      <p>找到全部彩蛋即視為同意：物理學可以開玩笑。請倒轉裝置（或長按下方按鈕）以履行合約，否則艙門拒開。</p>
+      <div class="contract-modal__actions">
+        <button type="button" class="cta" id="contractAccept">我簽署</button>
+        <button type="button" class="cta cta--ghost" id="contractFlip">長按以倒轉</button>
+        <button type="button" class="cta cta--ghost" id="contractDismiss">略過，繼續看</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="elevator-doors" id="elevatorDoors" hidden aria-hidden="true">
+    <div class="elevator-doors__leaf elevator-doors__leaf--left"></div>
+    <div class="elevator-doors__leaf elevator-doors__leaf--right"></div>
+  </div>
+
+  <div class="blank-exit" id="blankExit" hidden>
+    <p class="blank-exit__void">艙門外側</p>
+    <p class="blank-exit__code">about:blank</p>
+    <p class="blank-exit__hint">這只是彩蛋結局，不是網站壞掉。</p>
+    <div class="blank-exit__actions">
+      <button type="button" class="cta blank-exit__back" data-stay>返回 CASCADE</button>
+      <button type="button" class="cta cta--ghost" data-leave>前往 about:blank</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/eggs.js"></script>
+  <script src="js/madness.js"></script>
+</body>
+</html>
