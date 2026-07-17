@@ -1,5 +1,6 @@
 (function () {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isMobile = window.matchMedia("(max-width: 899px)").matches;
   const progressEl = document.getElementById("progress");
   const railSection = document.getElementById("rail");
   const railTrack = document.getElementById("railTrack");
@@ -200,6 +201,8 @@
 
   function initLenis() {
     if (reduceMotion || typeof Lenis === "undefined") return null;
+    // 手機用原生捲動較跟手，避免 Lenis 拖泥帶水
+    if (window.matchMedia("(max-width: 899px)").matches) return null;
     const instance = new Lenis({
       duration: 1.15,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -325,6 +328,27 @@
 
       // Progressive beats
       document.querySelectorAll("[data-beat]").forEach((beat) => {
+        if (isMobile || reduceMotion) {
+          // 手機改為簡單進場，避免 scrub 造成半透明難讀
+          gsap.fromTo(
+            beat,
+            { opacity: 0.35, y: 24 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.55,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: beat,
+                start: "top 88%",
+                toggleActions: "play none none reverse",
+                onEnter: () => beat.classList.add("is-active"),
+              },
+            }
+          );
+          return;
+        }
+
         gsap.fromTo(
           beat,
           { opacity: 0.18, y: 48 },
@@ -347,7 +371,7 @@
       // Horizontal rail
       if (railSection && railTrack) {
         const getRailX = () =>
-          -(Math.max(0, railTrack.scrollWidth - window.innerWidth + 56));
+          -(Math.max(0, railTrack.scrollWidth - window.innerWidth + 24));
 
         gsap.to(railTrack, {
           x: getRailX,
@@ -356,7 +380,7 @@
             trigger: railSection,
             start: "top top",
             end: "bottom bottom",
-            scrub: 0.55,
+            scrub: isMobile ? 0.2 : 0.55,
             invalidateOnRefresh: true,
           },
         });
